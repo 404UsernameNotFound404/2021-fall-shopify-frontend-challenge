@@ -32,6 +32,7 @@ type MovieDisplayProps = MovieData & {
     className?: string;
 };
 
+// TODO when title is too long it looks bad
 export const MovieDisplay = ({Title, children, Year, className}: MovieDisplayProps) => {
 
     return (

@@ -23,19 +23,24 @@ type ResultsDisplayProps = {
     searchString: string;
     nominateFilm: (filmId: string) => void;
     loading: boolean;
+    error?: string;
 };
 
-export const SearchResultsDisplay = ({className, results, nominateFilm, searchString, loading}: ResultsDisplayProps) => {
+export const SearchResultsDisplay = ({error,className, results, nominateFilm, searchString, loading}: ResultsDisplayProps) => {
     return (
         <Component className={className}>
             <Heading>Results for "{searchString}"</Heading>
             {
                 !loading ? 
-                results && results.map(({imdbID, Title, Year, nominated}) => 
-                    <StyledMovieDisplay key={imdbID} imdbID={imdbID} Title={Title} Year={Year}>
-                        <Button onClick={() => nominateFilm(imdbID)} disabled={nominated} size={"slim"}>Nominate</Button>
-                    </StyledMovieDisplay>
-                ) : "loading"
+                <>
+                    {results && results.map(({imdbID, Title, Year, nominated}) => 
+                        <StyledMovieDisplay key={imdbID} imdbID={imdbID} Title={Title} Year={Year}>
+                            <Button onClick={() => nominateFilm(imdbID)} disabled={nominated} size={"slim"}>Nominate</Button>
+                        </StyledMovieDisplay>
+                    )}
+                    {error && error}
+                </>
+                : "loading" // TODO loading animation
             }
         </Component>
     );

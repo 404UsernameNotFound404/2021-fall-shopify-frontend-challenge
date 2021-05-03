@@ -5,6 +5,7 @@ import translations from '@shopify/polaris/locales/en.json';
 import { MovieSearchBarContainer } from './packages/movie-search-bar-react';
 import { NominationsDisplay } from './packages/nominations-display-react';
 import { ResultType, SearchResultsDisplay } from './packages/search-results-display-react';
+import { MovieData } from './packages/movie-display-react';
 
 const TestResults = {
   searchString: "",
@@ -76,29 +77,26 @@ function later(delay: number) {
 }
 
 function App() {
-  const [nominations, setNominations] = useState(TestNominations);
-  const [searchResults, setSearchResults] = useState({} as {searchString: string, results: ResultType[], error: ""} | null);
-  const [searchStringForResults, setSearchStringForResults] = useState(""); // TODO different name as it's purpose is different now.
+  const [nominations, setNominations] = useState([] as MovieData[]);
+  const [searchResults, setSearchResults] = useState({} as {searchString: string, results: ResultType[], error: string} | null);
+  const [currentSearchString, setCurrentSearchString] = useState(null as null | string); // TODO different name as it's purpose is different now.
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (searchResults?.searchString == searchStringForResults) {
-      // good to go
-      const resultsWithNomination = searchResults ? searchResults.results.map(result => {
-        return {...result, nominated: !!nominations.find(nomination => nomination.imdbID == result.imdbID)};
-      }) : [];
-
-      setSearchResults({...searchResults, results: resultsWithNomination ? resultsWithNomination : []});
-      
-      setLoading(false);
-    } else {
-      setLoading(true);
+    // this if makes sure the code does not run on the startup of the component.
+    if (currentSearchString != null) {  
+      if (searchResults?.searchString == currentSearchString) {
+        // good to go
+        setLoading(false);
+      } else {
+        setLoading(true);
+      }
     }
   }, [searchResults])
 
   const generateSearchResults = (searchString: string) => {
     console.log(searchString);
-    setSearchStringForResults(searchString);
+    setCurrentSearchString(searchString);
     setLoading(true);
     generateSearchResultsAsync(searchString);
   }
@@ -107,19 +105,20 @@ function App() {
     try {
       const apiSearchResultRaw = await fetch(`http://www.omdbapi.com/?s=${searchString}&page=1&type=movie&apikey=24e07721`);
       const apiSearchResultJSON = await apiSearchResultRaw.json();
-      console.log(apiSearchResultJSON);
-      // const apiSearchResultJSON = await later(1000);
-      if (!apiSearchResultJSON.error) setSearchResults({results: apiSearchResultJSON.Search, searchString: searchString, error: ""}); 
-      else setSearchResults({results: [], searchString: searchString, error: apiSearchResultJSON.error}); 
+      // This is because the API returns so quickly you can be mid typing and it 
+      await later(500);
+     
+      if (!apiSearchResultJSON.Error) {
+        const resultsWithNomination = apiSearchResultJSON.Search.map((result: MovieData) => {
+          return {...result, nominated: !!nominations.find(nomination => nomination.imdbID == result.imdbID)};
+        });
+        setSearchResults({results: resultsWithNomination, searchString: searchString, error: ""}); 
+      }
+      else setSearchResults({results: [], searchString: searchString, error: apiSearchResultJSON.Error}); 
     } catch(err) {
-      console.log("error");
+      setSearchResults({results: [], searchString: searchString, error: "Error"});
     }
   };
-
-  const checkIfSearchResultStringChanged = (oldSearchString: string) => {
-    console.log(`${oldSearchString} == ${searchStringForResults}`)
-    return oldSearchString == searchStringForResults;
-  }
 
   const nominateFilm = (filmId: string) => {
       if (searchResults != null) {
@@ -156,7 +155,7 @@ function App() {
           <Title>The Shoppies</Title>
           <MovieSearchBarContainer generateSearchResults={generateSearchResults} />
           <ResultsAndNominationsContainer>
-            <StyledSearchResultsDisplay loading={loading} searchString={searchResults != null ? searchResults.searchString : ""} nominateFilm={nominateFilm} results={searchResults != null ? searchResults.results : []} />
+            <StyledSearchResultsDisplay loading={loading} error={searchResults?.error} searchString={searchResults != null ? searchResults.searchString : ""} nominateFilm={nominateFilm} results={searchResults != null ? searchResults.results : []} />
             <StyledNominationsDisplay removeNomination={removeNomination} nominations={nominations} />
           </ResultsAndNominationsContainer>
         </PageContent>
