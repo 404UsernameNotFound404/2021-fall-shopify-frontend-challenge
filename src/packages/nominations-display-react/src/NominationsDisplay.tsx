@@ -10,6 +10,10 @@ const Component = styled(Card)`
     height: fit-content;
 `;
 
+const StyledMovieDisplay = styled(MovieDisplay)`
+    margin-bottom: 1rem;
+`;
+
 type NominationsDisplayProps = { 
     className?: string;
     nominations: MovieData[];
@@ -22,9 +26,9 @@ export const NominationsDisplay = ({className, nominations, removeNomination}: N
             <Heading>Nominations</Heading>
             {
                 nominations.map(nomination => 
-                    <MovieDisplay key={nomination.id} {...nomination}>
-                        <Button onClick={() => removeNomination(nomination.id)} size={"slim"}>Remove</Button>
-                    </MovieDisplay>
+                    <StyledMovieDisplay key={nomination.imdbID} {...nomination}>
+                        <Button onClick={() => removeNomination(nomination.imdbID)} size={"slim"}>Remove</Button>
+                    </StyledMovieDisplay>
                 )
             }
         </Component>

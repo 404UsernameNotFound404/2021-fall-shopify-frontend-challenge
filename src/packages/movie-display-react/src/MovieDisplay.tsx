@@ -22,9 +22,9 @@ const MovieTitleAndTitle = styled.p`
 `;
 
 export type MovieData = {
-    title: string;
-    year: string;
-    id: string;
+    Title: string;
+    Year: string;
+    imdbID: string;
 }
 
 type MovieDisplayProps = MovieData & { 
@@ -32,12 +32,12 @@ type MovieDisplayProps = MovieData & {
     className?: string;
 };
 
-export const MovieDisplay = ({title, children, year, className}: MovieDisplayProps) => {
+export const MovieDisplay = ({Title, children, Year, className}: MovieDisplayProps) => {
 
     return (
         <Component className={className}>
             <Dot />
-            <MovieTitleAndTitle>{`${title} (${year})`}</MovieTitleAndTitle>
+            <MovieTitleAndTitle>{`${Title} (${Year})`}</MovieTitleAndTitle>
             {children}
         </Component>
     );

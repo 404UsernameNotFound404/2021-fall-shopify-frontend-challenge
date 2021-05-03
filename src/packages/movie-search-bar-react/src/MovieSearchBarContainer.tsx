@@ -1,4 +1,4 @@
-import { Autocomplete, Icon } from "@shopify/polaris";
+import { Autocomplete, Icon, TextField } from "@shopify/polaris";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import {SearchMinor} from '@shopify/polaris-icons';
@@ -28,31 +28,17 @@ export const MovieSearchBarContainer = ({generateSearchResults, className}: Movi
     const onSearch = () => generateSearchResults(searchString);
 
     const updateSearchString = useCallback((value: string | any) => {
-        console.log(value);
         setSearchString(value);
+        generateSearchResults(value);
     }, [options, loading]);
-
-    const onSelect = useCallback((value: any) => {
-        console.log(value);
-    }, []);
-
-    const textField = (
-        <Autocomplete.TextField
-          onChange={updateSearchString}
-          label="Movie Title"
-          value={searchString}
-          prefix={<Icon source={SearchMinor} color="base" />}
-          placeholder="Search"
-        />
-    );
 
     return (
         <Component className={className}>
-            <Autocomplete
-                options={options}
-                selected={[]}
-                onSelect={onSelect}
-                textField={textField}
+            <TextField
+                label="Movie Title"
+                onChange={updateSearchString}
+                value={searchString}
+                prefix={<Icon source={SearchMinor} color="base" />}
             />
         </Component>
     );
