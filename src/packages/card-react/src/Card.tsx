@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import testIds from "../tests/testIds";
 
 const Component = styled.div`
     background-color: white;
@@ -14,7 +15,7 @@ type CardProps = {
 
 export const Card = ({children, className}: CardProps) => {
     return (
-        <Component className={className}>
+        <Component data-testid={testIds.component} className={className}>
             {children}
         </Component>
     );

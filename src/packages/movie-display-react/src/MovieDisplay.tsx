@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import testIds from "../tests/testIds";
 
 const Component = styled.div`
     display: flex;
@@ -36,7 +37,7 @@ type MovieDisplayProps = MovieData & {
 export const MovieDisplay = ({Title, children, Year, className}: MovieDisplayProps) => {
 
     return (
-        <Component className={className}>
+        <Component data-testid={testIds.component} className={className}>
             <Dot />
             <MovieTitleAndTitle>{`${Title} (${Year})`}</MovieTitleAndTitle>
             {children}

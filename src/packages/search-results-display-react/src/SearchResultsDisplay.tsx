@@ -17,7 +17,7 @@ export type ResultType = {
     nominated: boolean;
 };
 
-type ResultsDisplayProps = { 
+type ResultsDisplayProps = {
     className?: string;
     results: ResultType[];
     searchString: string;

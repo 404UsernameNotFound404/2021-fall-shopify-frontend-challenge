@@ -1,4 +1,4 @@
-import { Autocomplete, Icon, TextField } from "@shopify/polaris";
+import { Icon, TextField } from "@shopify/polaris";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import {SearchMinor} from '@shopify/polaris-icons';
@@ -21,16 +21,12 @@ type MovieSearchBarContainerProps = {
 };
 
 export const MovieSearchBarContainer = ({generateSearchResults, className}: MovieSearchBarContainerProps) => {
-    const [searchString, setSearchString] = useState("");
-    const [selectedOptions, setSelectedOptions] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [searchString, setSearchString] = useState("");    
     
-    const onSearch = () => generateSearchResults(searchString);
-
     const updateSearchString = useCallback((value: string | any) => {
         setSearchString(value);
         generateSearchResults(value);
-    }, [options, loading]);
+    }, [options]);
 
     return (
         <Component className={className}>
