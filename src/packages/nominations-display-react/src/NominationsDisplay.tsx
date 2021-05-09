@@ -5,7 +5,6 @@ import { Card } from "../../card-react";
 import { MovieData, MovieDisplay } from "../../movie-display-react";
 
 const Component = styled(Card)`
-    background-color: white;
     padding: 2.5% 4%;
     height: fit-content;
 `;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import testIds from "../tests/testIds";
 
 const Component = styled.div`
-    background-color: white;
+    background-color: ${({theme}) => theme && theme.primaryBackgroundColor};
     padding: 2.5% 4%;
     box-shadow: 0px 1px 16px rgba(0, 0, 0, 0.1);
 `;

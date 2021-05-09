@@ -13,6 +13,8 @@ const options = [
 
 const Component = styled(Card)`
     width: 100%;
+    padding: 1rem 1rem;
+    padding-bottom: 2rem;
 `;
 
 type MovieSearchBarContainerProps = { 

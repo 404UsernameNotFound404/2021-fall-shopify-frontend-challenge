@@ -1,5 +1,5 @@
 const testIds = {
-    component: "movie-search-bar-container-react-component",
+    component: "card-react-component",
 };
   
 export default testIds;
